@@ -48,6 +48,8 @@ curl -sSL https://github.com/lukits-projects/netclarify-agent/releases/latest/do
 irm https://github.com/lukits-projects/netclarify-agent/releases/latest/download/install.ps1 | iex
 ```
 
+> **💡 Auto-Configuration:** The installer will automatically detect your host IP and offer to update your NetClarify `.env` file with `SERVER_AGENT_URL` if found.
+
 ### Verify Installation
 ```bash
 curl http://127.0.0.1:43547/health
