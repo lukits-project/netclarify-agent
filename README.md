@@ -1,98 +1,23 @@
 # NetClarify Agent
 
-Lightweight local agent for network diagnostics including real-time traceroute, ping testing, and network scanning.
+Lightweight local agent for network diagnostics including traceroute, ping, and network scanning.
 
-## Features
-
-| Feature | Description |
-|---------|-------------|
-| **Traceroute** | Real-time WebSocket-based network path tracing |
-| **Ping** | ICMP ping tests with latency statistics |
-| **Network Scan** | Discover devices on your local network |
-| **Network Info** | View local network interface information |
-
-## Download
-
-See [Releases](https://github.com/lukits-project/netclarify-agent/releases) for all available downloads.
-
-### Available Binaries
-
-| Platform | Architecture | Binary |
-|----------|--------------|--------|
-| Linux | amd64 | `nc-agent-linux-amd64`, `netcly-linux-amd64` |
-| Linux | arm64 | `nc-agent-linux-arm64`, `netcly-linux-arm64` |
-| macOS | amd64 (Intel) | `nc-agent-darwin-amd64`, `netcly-darwin-amd64` |
-| macOS | arm64 (Apple Silicon) | `nc-agent-darwin-arm64`, `netcly-darwin-arm64` |
-| Windows | amd64 | `nc-agent-windows-amd64.exe`, `netcly-windows-amd64.exe` |
-
----
-
-## Quick Install
-
-### Linux/macOS
+## Quick Start
 
 ```bash
-curl -sSL https://github.com/lukits-project/netclarify-agent/releases/latest/download/install.sh | sudo bash
-```
+# Build
+cd agent
+go build -o netclarify-agent ./cmd/server
+go build -o netcly ./cmd/netcly
 
-### Windows (PowerShell as Administrator)
+# Install (macOS)
+sudo ./install.sh
 
-```powershell
-irm https://github.com/lukits-project/netclarify-agent/releases/latest/download/install.ps1 | iex
-```
-
----
-
-## Verify Installation
-
-```bash
+# Verify
 curl http://127.0.0.1:43547/health
 ```
 
-Expected response:
-```json
-{
-  "status": "ok",
-  "service": "netclarify-agent",
-  "version": "X.Y.Z"
-}
-```
-
----
-
-## Uninstall
-
-### Windows (PowerShell as Admin)
-
-```powershell
-sc stop NetClarifyAgent
-sc delete NetClarifyAgent
-Remove-Item -Recurse -Force "$env:ProgramFiles\NetClarify"
-```
-
-### macOS
-
-```bash
-sudo launchctl unload /Library/LaunchDaemons/com.netclarify.agent.plist
-sudo rm /Library/LaunchDaemons/com.netclarify.agent.plist
-sudo rm /usr/local/bin/netclarify-agent /usr/local/bin/netcly
-```
-
-### Linux
-
-```bash
-sudo systemctl stop netclarify-agent
-sudo systemctl disable netclarify-agent
-sudo rm /etc/systemd/system/netclarify-agent.service
-sudo rm /usr/local/bin/netclarify-agent /usr/local/bin/netcly
-sudo systemctl daemon-reload
-```
-
----
-
-## API Endpoints
-
-The agent runs on `http://127.0.0.1:43547` (localhost only).
+## Endpoints
 
 | Endpoint | Method | Description |
 |----------|--------|-------------|
@@ -102,17 +27,44 @@ The agent runs on `http://127.0.0.1:43547` (localhost only).
 | `/network-scan` | GET | Network device scan |
 | `/network-info` | GET | Local network info |
 
----
+## Commands
 
-## Requirements
+```bash
+# Update agent
+sudo ./update.sh
 
-- **Administrator/root privileges** required (ICMP needs raw sockets)
-- Agent runs as a system service and starts automatically on boot
+# Verify installation
+./verify.sh
 
----
+# Check health
+curl http://127.0.0.1:43547/health
+
+# View logs (macOS)
+tail -f /var/log/netclarify-agent.log
+
+# Restart agent (macOS)
+sudo launchctl unload /Library/LaunchDaemons/com.netclarify.agent.plist
+sudo launchctl load /Library/LaunchDaemons/com.netclarify.agent.plist
+```
+
+## NetCly CLI
+
+```bash
+# Simple trace
+sudo ./netcly 1.1.1.1
+
+# With options
+sudo ./netcly google.com --count 20 --json
+```
+
+## Documentation
+
+See the main documentation at [`../docs/07-agent.md`](../docs/07-agent.md) for:
+- Complete installation guide
+- All command options
+- Troubleshooting
+- Cross-platform builds
 
 ## License
 
-NetClarify Agent is provided by [Lukits Enterprise Co., Ltd.](https://www.lukits.com)
-
-Free for all users. See [NetClarify](https://netclarify.io) for more information.
+Copyright © 2025 NetClarify
