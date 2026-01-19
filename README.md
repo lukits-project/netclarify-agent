@@ -11,6 +11,17 @@ Lightweight local agent for network diagnostics including real-time traceroute, 
 | **Network Scan** | Discover devices on your local network |
 | **Network Info** | View local network interface information |
 
+## Server-Side Integration
+
+The NetClarify Backend utilizes this agent to perform "Server-Side" diagnostics.
+- **Default Port:** `43547` (HTTP/WebSocket)
+- **Binder:** Listens on `0.0.0.0` by default to allow connections from Docker containers.
+- **CORS:** Allowed for all origins to facilitate local development and container networking.
+
+If running NetClarify in **Docker**, ensure the Backend can reach the Host Agent:
+1. Agent must be running on the Host.
+2. Backend `.env` must be configured with `SERVER_AGENT_URL=http://YOUR_HOST_IP:43547`.
+
 ## Download
 
 See [Releases](../../releases) for all available downloads.
